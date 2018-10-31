@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!-- <link rel="icon" href="../../../../favicon.ico"> -->
+  
+  <title>luthfibitly</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+</head>
+<body>
+  <header>
+    <div class="collapse bg-dark" id="navbarHeader">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-8 col-md-7 py-4">
+            <h4 class="text-white">About</h4>
+            <p class="text-muted">Add some information about the album below, the author, or any other background context. Make it a few sentences long so folks can pick up some informative tidbits. Then, link them off to some social networking sites or contact information.</p>
+          </div>
+          <div class="col-sm-4 offset-md-1 py-4">
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white"id="logout">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark box-shadow">
+        <div class="container d-flex justify-content-between">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <strong>Luthfibitly</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main role="main">
+      <br>
+      <div class="container">
+        <h2>Form Short Url</h2>
+          <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text"class="form-control" id="title">
+          </div>
+          <div class="form-group">
+            <label for="short">Short URL</label>
+            <input type="text" class="form-control" id="short">
+          </div>
+          <div class="form-group">
+            <label for="url">URL</label>
+            <input type="text" class="form-control" id="url">
+          </div>
+          <div>
+            <button class="btn btn-dark" id="shortsub">Submit</button>
+            <!-- <button class="btn btn-dark" id="#">Reset</button> -->
+          </div>
+          <!-- </form> -->
+        </div>
+        <br>
+        <br>
+        <div class="container">
+          <div class="card-deck">
+            <div class="card">
+              <img class="card-img-top" src="" alt="">
+              <div class="card-body">
+                <table class="table table-hover" id="datatabel">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">Title</th>
+                      <th scope="col">Short URL</th>
+                      <th scope="col">URL</th>
+                      <th scope="col">Total Click</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="listdata">
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <footer class="text-muted">
+          <!-- <div class="container">
+            <p class="float-right">
+              <a href="#">Back to top</a>
+            </p>
+            <p>Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
+            <p>New to Bootstrap? <a href="../../">Visit the homepage</a> or read our <a href="../../getting-started/">getting started guide</a>.</p>
+          </div> -->
+        </footer> 
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <!-- Bootstrap core JavaScript
+          ================================================== -->
+          <!-- Placed at the end of the document so the pages load faster -->
+          <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+          <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+          <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+          <script async>
+            (async()=>{
+              const access = localStorage.getItem('token')
+              if (!access) {
+                window.location.href='login.html'
+              }
+              // POST data Short
+              const btnshort = document.getElementById("shortsub")
+              btnshort.addEventListener("click",async()=>{
+                const titles = $('#title').val()
+                const shorts = $('#short').val()
+                const urls= $('#url').val()
+                const addlink = "http://localhost:5000/api/addshort"
+                try{
+                  const data = await axios.post(addlink,{
+                    title:titles,
+                    short:shorts,
+                    url:urls
+                  },{
+                    headers:{
+                      Authorization:localStorage.getItem('token')
+                    }
+                  })
+                  alert('Success')
+                  window.location.href='home.html'
+                  console.log(data)
+                }catch (error){
+                  console.log(error)
+                }
+              })
+
+              
+
+              // GET data Short
+              const getdata = 'http://localhost:5000/api/track/'
+              const result = await axios.get(getdata,{
+                headers:{
+                  Authorization:localStorage.getItem('token')
+                }
+              })
+              
+              console.log(result)
+              const results = result.data
+              results.map(short=>{
+                $('#listdata').append(`
+                <tr>
+                  <td>${short.title}</td>
+                  <td>${short.short}</td>
+                  <td>${short.url}</td>
+                  <td>${short.tracks.length}</td>
+                  <td><a href ="edit.html?id=${short.id}" class ="btn btn-dark" id="shortedit-${short.id}">Edit</a>
+                      <button class ="btn btn-dark" id="shorthapus-${short.id}">Hapus</button>
+                  </td>
+                  </tr>
+                  `)
+              //     const btnedit = document.getElementById(`shortedit-${short.id}`)
+              //   btnedit.addEventListener("click",async()=>{
+              //   const editlink = "http://localhost:5000/short"
+              
+              //     alert('Edit data')
+              //     window.location.href='edit.html'
+              //     console.log(dataedit)
+                
+              // })
+              
+                // DELETE data
+                const btndelete = document.getElementById(`shorthapus-${short.id}`)
+               const hapuslink ="http://localhost:5000/api/delete/"
+               btndelete.addEventListener("click",async()=>{
+                 const a = await axios.delete(hapuslink+short.id,{
+                   headers:{
+                     Authorization : localStorage.getItem('token')
+                    }
+                  })
+                  // console.log('juhjuhuj ')
+                  if (a) {
+                      alert('hapus data?') 
+                    window.location.href='home.html'
+                  }else{
+                  alert('Delete gagal')
+
+                  }
+               })
+
+                })
+                
+                // datatabel
+                $(document).ready(function() {
+                  $('#datatabel').DataTable();
+                });
+                
+                // logout
+            const logout = document.getElementById('logout')
+        logout.addEventListener('click',async () => {
+            try {
+                 localStorage.clear();
+                 window.location = 'login.html'
+             } catch (error) {
+                 console.log(error)
+             }
+         
+        })
+                
+              })()
+            </script>
+          </body>
+          </html>
+          

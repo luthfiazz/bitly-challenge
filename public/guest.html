@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+    <title>luthfibitly</title>
+    <head>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <!-- Bootstrap CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+      <link rel="stylesheet" href="stylesheets/styles.css">
+    </head>
+<body class="bglogin">
+<div>
+  <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+        <h5 class="my-0 mr-md-auto font-weight-normal">Luthfibitly</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+          <a class="p-2 text-dark" href="guest.html">Guest</a>
+          <a class="p-2 text-dark" href="register.html">Register</a>
+        </nav>
+        <a class="btn btn-outline-primary" href="login.html">Sign in</a>
+      </div>
+      </div>
+    <!-- As a link -->
+    <div class="container">
+      <div class="text-center">
+        <h1 class="h3 mb-3 font-weight-normal">Guest, Shorten Here</h1>
+        <div class="input-group">
+                <input type="text" class="form-control" placeholder="Paste a link to shorten it" aria-label="Recipient's username" aria-describedby="basic-addon2" id="url">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-dark" type="button" id="shorten" >Short</button>
+                </div>
+                
+              </div>
+      <p class="mt-5 mb-3 text-muted text-center">&copy; 2018</p>
+            </div>
+            <div>
+                <p id="restitle"></p>
+                <p id="resshort"></p>
+                <p id="resurl"></p>
+            </div>
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script>
+    // POST data Short
+    const btnshort = document.getElementById("shorten")
+              btnshort.addEventListener("click",async()=>{
+                const urls= $('#url').val()
+                const addlink = "http://localhost:5000/api/guesshort"
+                try{
+                  const data = await axios.post(addlink,{
+                    url:urls
+                  })
+                  alert('Success')
+                  console.log(data)
+                  const result = data.data
+                  $('#restitle').append(`title:${result.title}`)
+                  $('#resshort').append(`short:${result.short}`)
+                  $('#resurl').append(`url:${result.url}`)
+                }catch (error){
+                  alert('please fill URL!')
+                  console.log(error)
+                }
+              })
+  </script>
+  </body>
+</html>
